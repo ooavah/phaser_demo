@@ -16,7 +16,7 @@ function create() {
 
 
     
-    let text = "Moikka!\n Tässä tämä \n Phaser-demo.";
+    let text = "Moikka!\n Klikkaa ruutua \n saadaksesi koiria.";
     let style = { font: "85px Arial", fill: "#000000", align: "center" };
     let text0 = game.add.text(game.world.centerX-200, 0, text, style);
     game.physics.arcade.enable([text0]);
@@ -26,20 +26,29 @@ function create() {
 
     game.physics.arcade.gravity.y = 100;
 
-    emitter = game.add.emitter(400, 100, 100);
-
+    emitter = game.add.emitter(0, 0, 90);
     emitter.makeParticles('doggo');
-    emitter.minParticleSpeed.setTo(-300, 30);
+    emitter.minParticleSpeed.setTo(-100, 30);
     emitter.maxParticleSpeed.setTo(300, 100);
-    emitter.minParticleScale = 0.1;
-    emitter.maxParticleScale = 0.5;
+    emitter.minParticleScale = 0.01;
+    emitter.maxParticleScale = 0.8;
     emitter.gravity = 250;
-    emitter.flow(2000, 500, 5, -1);
+    game.input.onDown.addOnce(particleBurst, this);
 
 
     music = game.add.audio('track');
     music.play();
 }
+function particleBurst(pointer) {
+
+    emitter.x = pointer.x;
+    emitter.y = pointer.y;
+
+    emitter.start(true, 4000, null, 10);
+    game.time.events.add(2000, destroyEmitter, this);
+}
 function update() {
+    
+    
 
 }
